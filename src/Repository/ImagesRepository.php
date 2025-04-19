@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\DTO\FindingParametersDTO;
 use App\Entity\Image;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,11 +17,19 @@ class ImagesRepository extends ServiceEntityRepository
         parent::__construct($registry, Image::class);
     }
 
-    public function getImagesByUser(int $userId): array
+    public function getImagesByUser(int $userId, FindingParametersDTO $findingParametersDTO): array
     {
-        return $this->createQueryBuilder('i')
-            ->select('i')
-            ->orderBy('i.id', 'DESC')
+        $qb = $this->createQueryBuilder('i')
+            ->select('i');
+
+        if (null !== $findingParametersDTO->searchTerms) {
+            $qb
+                ->andWhere('i.title LIKE :searchTerms')
+                ->setParameter('searchTerms', '%'.$findingParametersDTO->searchTerms.'%');
+        }
+
+        return $qb
+            ->orderBy("i.{$findingParametersDTO->sortField}", $findingParametersDTO->sortDirection)
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();

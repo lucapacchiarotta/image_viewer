@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Service\FilesUploader;
+use App\Service\FindingParametersBuilder;
 use App\Service\ImagesRetriever;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,18 +22,21 @@ class MainController extends AbstractController
         private readonly ImagesRetriever $imagesRetriever,
         private readonly FilesUploader $filesUploader,
         private readonly EntityManagerInterface $entityManager,
+        private readonly FindingParametersBuilder $findingParametersBuilder,
     ) {
     }
 
     #[Route(path: '/', name: 'homepage', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        $images = $this->imagesRetriever->getImages(self::CURRENT_USER_ID);
         $session = $request->getSession();
+        $findingParametersDTO = $this->findingParametersBuilder->build($request->query->all(), $session);
+        $images = $this->imagesRetriever->getImages(self::CURRENT_USER_ID, $findingParametersDTO);
 
         return $this->render('images-list.html.twig', [
             'images' => $images,
             'show' => $session->get('show') ?? 'table',
+            'searchTerms' => $findingParametersDTO->searchTerms,
         ]);
     }
 

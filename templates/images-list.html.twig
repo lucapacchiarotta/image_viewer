@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    <div class="row mb-3">
+    <div class="row mb-5">
         <div class="col-md-4">
             Cambia visualizzazione:
             {% if show == 'table' %}<button class="btn btn-primary btn-sm" onclick="window.location.href = 'show/grid';">Griglia</button>{% endif %}
@@ -13,6 +13,15 @@
         </div>
         <div class="col-md-4">
             Cerca nelle immagini:
+            <form method="GET" action="{{ path('homepage') }}" class="row g-3" enctype="multipart/form-data">
+                <div class="col-auto">
+                    <label for="searchTerms" class="visually-hidden">Testo da cercare</label>
+                    <input type="text" name="searchTerms" class="form-control" id="searchTerms" value="{{ searchTerms }}" />
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">Cerca</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -21,8 +30,6 @@
     {%  elseif show == 'grid' %}
         {% include 'list-grid.twig' with {'images': images} %}
     {% endif %}
-
-
 
     <div class="row mb-3">
         <div class="col-md-12">

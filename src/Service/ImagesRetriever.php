@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\DTO\FindingParametersDTO;
 use App\Repository\ImagesRepository;
 
 class ImagesRetriever
@@ -12,10 +13,8 @@ class ImagesRetriever
     {
     }
 
-    public function getImages(int $userId): array
+    public function getImages(int $userId, FindingParametersDTO $findingParametersDTO): array
     {
-        $images = $this->imagesRepository->getImagesByUser($userId);
-
-        return $images;
+        return $this->imagesRepository->getImagesByUser($userId, $findingParametersDTO);
     }
 }
