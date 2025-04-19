@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="row">
+        <div class="col fw-bold">Titolo</div>
+        <div class="col fw-bold">Immagine</div>
+        <div class="col fw-bold">Data caricamento</div>
+    </div>
+    {% for image in images %}
+        <div class="row">
+            <div class="col">
+                {{ image.title }}
+            </div>
+            <div class="col">
+                <img src="/images/{{ image.path }}" class="img-thumbnail"  alt="" />
+            </div>
+            <div class="col">
+                {{ image.creationDate | date('d/m/Y') }}
+            </div>
+        </div>
+    {% endfor %}
+</div>

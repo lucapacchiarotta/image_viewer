@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            Cambia visualizzazione:
+            {% if show == 'table' %}<button class="btn btn-primary btn-sm" onclick="window.location.href = 'show/grid';">Griglia</button>{% endif %}
+            {% if show == 'grid' %}<button class="btn btn-primary btn-sm" onclick="window.location.href = 'show/table';">Tabella</button>{% endif %}
+        </div>
+        <div class="col-md-4">
+            Cambia ordinamento immagini:
+        </div>
+        <div class="col-md-4">
+            Cerca nelle immagini:
+        </div>
+    </div>
+
+    {% if show == 'table' %}
+        {% include 'list-table.twig' with {'images': images} %}
+    {%  elseif show == 'grid' %}
+        {% include 'list-grid.twig' with {'images': images} %}
+    {% endif %}
+
+
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Carica una nuova immagine</h5>
+                    <form method="post" class="row g-3" action="{{ path('uploadPhoto') }}" enctype="multipart/form-data">
+                        <div class="col-auto">
+                            <label for="title" class="visually-hidden">Titolo</label>
+                            <input type="text" name="title" class="form-control" id="title" />
+                        </div>
+                        <div class="col-auto">
+                            <label for="photo" class="visually-hidden">Seleziona la foto</label>
+                            <input type="file" class="form-control-file" name="photo" id="photo" />
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-3">Carica la foto</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
