@@ -7,6 +7,7 @@ namespace App\Service;
 use App\DTO\FindingParametersDTO;
 use App\Entity\User;
 use App\Repository\ImagesRepository;
+use Doctrine\ORM\Query;
 
 class ImagesRetriever
 {
@@ -14,7 +15,7 @@ class ImagesRetriever
     {
     }
 
-    public function getImages(User $user, FindingParametersDTO $findingParametersDTO): array
+    public function getImages(User $user, FindingParametersDTO $findingParametersDTO): Query
     {
         return $this->imagesRepository->getImagesByUser($user, $findingParametersDTO);
     }

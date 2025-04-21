@@ -6,7 +6,7 @@ Deve essere utilizzato il linguaggio con cui ti trovi più a tuo agio, preferibi
 Realizzare un’unica pagina (homepage) che mostra:
 [DONE] 10 immagini prese da un database
 [DONE] un pulsante per caricare (upload) una nuova foto
-un paginatore
+[DONE] un paginatore
 [DONE] un filtro di ricerca
 [DONE] una serie di comandi per l'ordinamento (select o pulsanti)
 [DONE] un selettore (select o pulsante) per cambiare visualizzazione (vedi punto 5)

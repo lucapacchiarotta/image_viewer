@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Service\FilesUploader;
 use App\Service\FindingParametersBuilder;
 use App\Service\ImagesRetriever;
+use App\Service\ResultPaginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,14 +35,17 @@ class MainController extends AbstractController
     }
 
     #[Route(path: '/', name: 'homepage', methods: ['GET'])]
-    public function index(Request $request): Response
+    public function index(Request $request, ResultPaginator $paginator): Response
     {
         $session = $request->getSession();
         $findingParametersDTO = $this->findingParametersBuilder->build($request->query->all(), $session);
-        $images = $this->imagesRetriever->getImages($this->currentUser, $findingParametersDTO);
+        $imagesQuery = $this->imagesRetriever->getImages($this->currentUser, $findingParametersDTO);
+
+        $paginator->paginate($imagesQuery, $request->query->getInt('page', 1));
 
         return $this->render('images-list.html.twig', [
-            'images' => $images,
+            'paginator' => $paginator,
+            'images' => $paginator->getItems(),
             'show' => $session->get('show') ?? 'table',
             'searchTerms' => $findingParametersDTO->searchTerms,
             'showExcludedImages' => $findingParametersDTO->showExcludedImages,
@@ -82,6 +86,7 @@ class MainController extends AbstractController
 
     #[Route(
         path: '/imageexclusion/{image}/{operation}',
+        name: 'imageexclusion',
         requirements: [
             'image' => '\d+',
             'operation' => 'add|del',

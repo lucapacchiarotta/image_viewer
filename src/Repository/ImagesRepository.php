@@ -6,6 +6,7 @@ use App\DTO\FindingParametersDTO;
 use App\Entity\Image;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,7 +21,7 @@ class ImagesRepository extends ServiceEntityRepository
         parent::__construct($registry, Image::class);
     }
 
-    public function getImagesByUser(User $user, FindingParametersDTO $findingParametersDTO): array
+    public function getImagesByUser(User $user, FindingParametersDTO $findingParametersDTO): Query
     {
         $qb = $this->createQueryBuilder('i')
             ->select('i', 'u')
@@ -40,9 +41,11 @@ class ImagesRepository extends ServiceEntityRepository
             ->orderBy("i.{$findingParametersDTO->sortField}", $findingParametersDTO->sortDirection)
             ->setMaxResults(10)
             ->getQuery();
+
+        return $query;
 //        dump($query->getSQL());die();
-        $res = $query->getResult();
-//        dump($res);
-        return $res;
+//        $res = $query->getResult();
+////        dump($res);
+//        return $res;
     }
 }
