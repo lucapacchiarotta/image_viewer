@@ -45,4 +45,13 @@ class ImagesRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery();
     }
+
+    public function save(Image $image, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($image);
+
+        if (true === $flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 }

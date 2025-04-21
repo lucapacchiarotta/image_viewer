@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Entity\User;
+use App\Repository\ImagesRepository;
 use App\Service\FilesUploader;
 use App\Service\FindingParametersBuilder;
 use App\Service\ImagesRetriever;
@@ -66,7 +67,7 @@ class MainController extends AbstractController
     }
 
     #[Route(path: '/upload', name: 'uploadPhoto', methods: ['POST'])]
-    public function uploadImage(Request $request): Response
+    public function uploadImage(Request $request, ImagesRepository $imagesRepository): Response
     {
         $pathToSaveImage = $this->getParameter('kernel.project_dir').'/public/images/';
 
@@ -75,8 +76,7 @@ class MainController extends AbstractController
             if (null !== $fileName) {
                 $title = $request->request->get('title');
                 $image = Image::createFromData($fileName, $title);
-                $this->entityManager->persist($image);
-                $this->entityManager->flush();
+                $imagesRepository->save($image, true);
             }
         } catch (\Exception) {
         }
