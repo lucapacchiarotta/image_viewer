@@ -34,7 +34,7 @@ class FindingParametersBuilder
         $valueFromRequest = $requestData[$valueKey] ?? null;
         $valueFromSession = $session->get($valueKey);
 
-        if (null === $valueFromRequest && null === $valueFromSession) {
+        if (empty($valueFromRequest) && empty($valueFromSession)) {
             $session->set($valueKey, $defaultValue);
             $requestData[$valueKey] = $defaultValue;
             $isValueSet = true;

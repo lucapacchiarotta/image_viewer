@@ -34,18 +34,15 @@ class ImagesRepository extends ServiceEntityRepository
         }
 
         if ('0' === $findingParametersDTO->showExcludedImages) {
-            $qb->andWhere("u.username IS NULL");
+            $qb->andWhere('u.username IS NULL');
         }
 
-        $query = $qb
-            ->orderBy("i.{$findingParametersDTO->sortField}", $findingParametersDTO->sortDirection)
+        if (!empty($findingParametersDTO->sortField) && !empty($findingParametersDTO->sortDirection)) {
+            $qb->orderBy("i.{$findingParametersDTO->sortField}", $findingParametersDTO->sortDirection);
+        }
+
+        return $qb
             ->setMaxResults(10)
             ->getQuery();
-
-        return $query;
-//        dump($query->getSQL());die();
-//        $res = $query->getResult();
-////        dump($res);
-//        return $res;
     }
 }

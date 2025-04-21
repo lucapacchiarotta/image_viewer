@@ -1,26 +1,24 @@
-<div class="container">
-    <div class="row">
-        <div class="col fw-bold">Titolo</div>
-        <div class="col fw-bold">Immagine</div>
-        <div class="col fw-bold">Data caricamento</div>
-    </div>
-    {% for image in images %}
-        <div class="row {% if true == image.isExcluded %}alert alert-dark{% endif %}">
-            <div class="col">
-                {{ image.title }} <br />
-                {% if true == image.isExcluded %}
-                    <button class="btn btn-primary btn-sm" onclick="window.location.href = '{{ path('imageexclusion', {'image': image.id, 'operation': 'del'}) }}';">Includi nella lista</button>
-                {% else %}
-                    <button class="btn btn-primary btn-sm" onclick="window.location.href = '{{ path('imageexclusion', {'image': image.id, 'operation': 'add'}) }}';">Rimuovi dalla lista</button>
-                {% endif %}
-
-            </div>
-            <div class="col">
-                <img src="/images/{{ image.path }}" class="img-thumbnail"  alt="" />
-            </div>
-            <div class="col">
-                {{ image.creationDate | date('d/m/Y H:i:s') }}
-            </div>
-        </div>
-    {% endfor %}
+<div class="row">
+    <div class="col fw-bold">Titolo</div>
+    <div class="col fw-bold">Immagine</div>
+    <div class="col fw-bold">Data caricamento</div>
 </div>
+{% for image in images %}
+    <div class="row {% if true == image.isExcluded %}alert alert-dark{% endif %}">
+        <div class="col">
+            {{ image.title }} <br />
+            {% if true == image.isExcluded %}
+                <button class="btn btn-primary btn-sm" onclick="window.location.href = '{{ path('imageexclusion', {'image': image.id, 'operation': 'del'}) }}';">Includi nella lista</button>
+            {% else %}
+                <button class="btn btn-primary btn-sm" onclick="window.location.href = '{{ path('imageexclusion', {'image': image.id, 'operation': 'add'}) }}';">Rimuovi dalla lista</button>
+            {% endif %}
+
+        </div>
+        <div class="col">
+            <img src="/images/{{ image.path }}" class="img-thumbnail"  alt="" />
+        </div>
+        <div class="col">
+            {{ image.creationDate | date('d/m/Y H:i:s') }}
+        </div>
+    </div>
+{% endfor %}
