@@ -1,13 +1,25 @@
 <div class="container">
+    {%  if null == images %}
+        <div class="alert alert-primary">
+            Nessuna immagina trovata
+        </div>
+    {%  endif %}
     {% for image in images %}
         <div class="row row-cols-3 mb-3">
-            <div class="col">
+            <div class="col {% if true == image.isExcluded %}alert alert-dark{% endif %}">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{ image.title }}</h5>
+                        <h5 class="card-title">
+                            {{ image.title }} <br />
+                            {% if true == image.isExcluded %}
+                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '{{ path('app_main_manageimageexclusion', {'image': image.id, 'operation': 'del'}) }}';">Includi nella lista</button>
+                            {% else %}
+                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '{{ path('app_main_manageimageexclusion', {'image': image.id, 'operation': 'add'}) }}';">Rimuovi dalla lista</button>
+                            {% endif %}
+                        </h5>
                         <p class="card-text">
                             <img src="/images/{{ image.path }}" class="img-thumbnail"  alt="" />
-                            {{ image.creationDate | date('d/m/Y') }}
+                            {{ image.creationDate | date('d/m/Y H:i:s') }}
                         </p>
                     </div>
                 </div>

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ImagesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,14 +20,25 @@ class Image
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $creation_date = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false)]
+    private \DateTimeInterface $creation_date;
 
     #[ORM\Column(length: 255)]
     private string $title;
 
     #[ORM\Column(type: Types::JSON)]
     private array $metadata = [];
+
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'excludedImages')]
+    private Collection $excludedUsers;
+
+    public function __construct()
+    {
+        $this->excludedUsers = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -97,5 +110,35 @@ class Image
             ->setCreationDate(new \DateTime());
 
         return $image;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getExcludedUsers(): Collection
+    {
+        return $this->excludedUsers;
+    }
+
+    public function addExcludedUser(User $excludedUser): static
+    {
+        if (!$this->excludedUsers->contains($excludedUser)) {
+            $this->excludedUsers->add($excludedUser);
+        }
+
+        return $this;
+    }
+
+    public function removeExcludedUser(User $excludedUser): static
+    {
+        $this->excludedUsers->removeElement($excludedUser);
+
+        return $this;
+    }
+
+    public function isExcluded(): bool
+    {
+        return count($this->excludedUsers) > 0;
+
     }
 }

@@ -3,23 +3,49 @@
 {% block body %}
 
     <div class="row mb-5">
-        <div class="col-md-4">
-            Cambia visualizzazione:
+        <div class="col-md-2">
+            Visualizzazione:
             {% if show == 'table' %}<button class="btn btn-primary btn-sm" onclick="window.location.href = 'show/grid';">Griglia</button>{% endif %}
             {% if show == 'grid' %}<button class="btn btn-primary btn-sm" onclick="window.location.href = 'show/table';">Tabella</button>{% endif %}
         </div>
-        <div class="col-md-4">
-            Cambia ordinamento immagini:
+        <div class="col-md-3">
+            Immagini nascoste:
+            {% if showExcludedImages == '1' %}<button class="btn btn-primary btn-sm" onclick="window.location.href = '?showExcludedImages=0';">Disattiva</button>{% endif %}
+            {% if showExcludedImages == '0' %}<button class="btn btn-primary btn-sm" onclick="window.location.href = '?showExcludedImages=1';">Attiva</button>{% endif %}
         </div>
-        <div class="col-md-4">
-            Cerca nelle immagini:
+        <div class="col-md-5">
+            <form method="GET" action="{{ path('homepage') }}" class="row g-3" enctype="multipart/form-data">
+                <div class="col-auto">
+                    Ordinamento
+                </div>
+                <div class="col-auto">
+                    <label for="sortField" class="visually-hidden">Campo:</label>
+                    <select name="sortField" class="form-control" id="sortField">
+                        <option value="creation_date" {% if sortField == 'creation_date' %}selected{% endif %}>Data caricamento</option>
+                        <option value="title" {% if sortField == 'title' %}selected{% endif %}>Titolo</option>
+                        <option value="random" {% if sortField == 'random' %}selected{% endif %}>Casuale</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <label for="sortDirection" class="visually-hidden">Ordinamento:</label>
+                    <select name="sortDirection" class="form-control" id="sortDirection">
+                        <option value="asc" {% if sortDirection == 'asc' %}selected{% endif %}>Crescente</option>
+                        <option value="desc" {% if sortDirection == 'desc' %}selected{% endif %}>Discendente</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3 btn-sm">Ordina</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2">
             <form method="GET" action="{{ path('homepage') }}" class="row g-3" enctype="multipart/form-data">
                 <div class="col-auto">
                     <label for="searchTerms" class="visually-hidden">Testo da cercare</label>
-                    <input type="text" name="searchTerms" class="form-control" id="searchTerms" value="{{ searchTerms }}" />
+                    <input type="text" name="searchTerms" class="form-control" id="searchTerms" value="{{ searchTerms }}" size="7" />
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3">Cerca</button>
+                    <button type="submit" class="btn btn-primary mb-3 btn-sm">Cerca</button>
                 </div>
             </form>
         </div>

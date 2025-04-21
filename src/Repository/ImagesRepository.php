@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\DTO\FindingParametersDTO;
 use App\Entity\Image;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,15 +13,18 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ImagesRepository extends ServiceEntityRepository
 {
+    private FindingParametersDTO $findingParametersDTO;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Image::class);
     }
 
-    public function getImagesByUser(int $userId, FindingParametersDTO $findingParametersDTO): array
+    public function getImagesByUser(User $user, FindingParametersDTO $findingParametersDTO): array
     {
         $qb = $this->createQueryBuilder('i')
-            ->select('i');
+            ->select('i', 'u')
+            ->leftJoin('i.excludedUsers', 'u');
 
         if (null !== $findingParametersDTO->searchTerms) {
             $qb
@@ -28,10 +32,17 @@ class ImagesRepository extends ServiceEntityRepository
                 ->setParameter('searchTerms', '%'.$findingParametersDTO->searchTerms.'%');
         }
 
-        return $qb
+        if ('0' === $findingParametersDTO->showExcludedImages) {
+            $qb->andWhere("u.username IS NULL");
+        }
+
+        $query = $qb
             ->orderBy("i.{$findingParametersDTO->sortField}", $findingParametersDTO->sortDirection)
             ->setMaxResults(10)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
+//        dump($query->getSQL());die();
+        $res = $query->getResult();
+//        dump($res);
+        return $res;
     }
 }

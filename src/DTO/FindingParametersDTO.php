@@ -11,7 +11,7 @@ class FindingParametersDTO
     public ?string $searchTerms;
     public string $sortField;
     public string $sortDirection;
-    public bool $showExcludedImages;
+    public string $showExcludedImages;
 
     public function __construct(array $parametersFromRequest)
     {

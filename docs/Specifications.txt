@@ -4,13 +4,13 @@ Requisiti:
 
 Deve essere utilizzato il linguaggio con cui ti trovi più a tuo agio, preferibile ma non obbligatorio l'utilizzo di PHP con un framework come Laravel, Symfony, Cakephp, etc.
 Realizzare un’unica pagina (homepage) che mostra:
-10 immagini prese da un database
-un pulsante per caricare (upload) una nuova foto
+[DONE] 10 immagini prese da un database
+[DONE] un pulsante per caricare (upload) una nuova foto
 un paginatore
-un filtro di ricerca
-una serie di comandi per l'ordinamento (select o pulsanti)
-un selettore (select o pulsante) per cambiare visualizzazione (vedi punto 5)
-un pulsante per attivare/disattivare la visualizzazione delle immagini escluse (vedi punto 7)
+[DONE] un filtro di ricerca
+[DONE] una serie di comandi per l'ordinamento (select o pulsanti)
+[DONE] un selettore (select o pulsante) per cambiare visualizzazione (vedi punto 5)
+[DONE] un pulsante per attivare/disattivare la visualizzazione delle immagini escluse (vedi punto 7)
 
 Le immagini (il loro path) e le altre informazioni sono memorizzati in un database a scelta
 Ogni immagine deve avere un titolo, un’immagine (file), ed una data di caricamento
